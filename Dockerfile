@@ -73,11 +73,13 @@ RUN apt-get update && \
          apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
-ENV TZ=Asia/Shanghai
+ENV TZ=America/Lima
+ARG MODEL
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
         && echo $TZ > /etc/timezone && \
         mkdir -p /opt/media/bin/www
-
+RUN mkdir /opt/media/ZLMediaKit/release/linux/${MODEL}/MediaServer
+RUN mkdir /opt/media/ZLMediaKit/release/linux/${MODEL}/
 WORKDIR /opt/media/bin/
 COPY --from=build /opt/media/ZLMediaKit/release/linux/${MODEL}/MediaServer /opt/media/ZLMediaKit/default.pem /opt/media/bin/
 COPY --from=build /opt/media/ZLMediaKit/release/linux/${MODEL}/config.ini /opt/media/conf/
