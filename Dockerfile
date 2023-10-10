@@ -42,10 +42,10 @@ RUN mkdir -p /opt/media
 COPY . /opt/media/ZLMediaKit
 WORKDIR /opt/media/ZLMediaKit
 #RUN git submodule update --init --recursive && \
-RUN mkdir -p build release/linux/${MODEL}/
+RUN mkdir -p build release/linux/Release/
 
 WORKDIR /opt/media/ZLMediaKit/build
-RUN cmake -DCMAKE_BUILD_TYPE=${MODEL} -DENABLE_WEBRTC=true -DENABLE_FFMPEG=true -DENABLE_TESTS=false -DENABLE_API=false .. && \
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_WEBRTC=true -DENABLE_FFMPEG=true -DENABLE_TESTS=false -DENABLE_API=false .. && \
     make -j $(nproc)
 
 FROM ubuntu:18.04
@@ -78,11 +78,11 @@ ARG MODEL
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
         && echo $TZ > /etc/timezone && \
         mkdir -p /opt/media/bin/www
-RUN mkdir /opt/media/ZLMediaKit/release/linux/${MODEL}/MediaServer
-RUN mkdir /opt/media/ZLMediaKit/release/linux/${MODEL}/
+RUN mkdir /opt/media/ZLMediaKit/release/linux/Release/MediaServer
+RUN mkdir /opt/media/ZLMediaKit/release/linux/Release/
 WORKDIR /opt/media/bin/
-COPY --from=build /opt/media/ZLMediaKit/release/linux/${MODEL}/MediaServer /opt/media/ZLMediaKit/default.pem /opt/media/bin/
-COPY --from=build /opt/media/ZLMediaKit/release/linux/${MODEL}/config.ini /opt/media/conf/
+COPY --from=build /opt/media/ZLMediaKit/release/linux/Release/MediaServer /opt/media/ZLMediaKit/default.pem /opt/media/bin/
+COPY --from=build /opt/media/ZLMediaKit/release/linux/Release/config.ini /opt/media/conf/
 COPY --from=build /opt/media/ZLMediaKit/www/ /opt/media/bin/www/
 ENV PATH /opt/media/bin:$PATH
 CMD ["./MediaServer","-s", "default.pem", "-c", "../conf/config.ini", "-l","0"]
