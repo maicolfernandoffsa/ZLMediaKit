@@ -78,8 +78,6 @@ ARG MODEL
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
         && echo $TZ > /etc/timezone && \
         mkdir -p /opt/media/bin/www
-RUN mkdir /opt/media/ZLMediaKit/release/linux/Release/MediaServer
-RUN mkdir /opt/media/ZLMediaKit/release/linux/Release/
 WORKDIR /opt/media/bin/
 COPY --from=build /opt/media/ZLMediaKit/release/linux/Release/MediaServer /opt/media/ZLMediaKit/default.pem /opt/media/bin/
 COPY --from=build /opt/media/ZLMediaKit/release/linux/Release/config.ini /opt/media/conf/
